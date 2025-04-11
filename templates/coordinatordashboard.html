@@ -1,0 +1,85 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coordinator Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+        }
+        .sidebar {
+            width: 250px;
+            background: #f4f4f4;
+            padding: 20px;
+            height: 100vh;
+        }
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+        }
+        .box {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-top: 10px;
+        }
+        .logout {
+            color: red;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <img src="{% static 'images/profile.jpeg' %}" alt="Profile Pic" width="80" height="80">
+        <h3>{{ user.username }}</h3>
+        <p>Role: Coordinator</p>
+        <a href="#">Manage Schedule</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <p>Date: {{ date }} | Time: {{ time }}</p>
+            <form action="{% url 'accounts:logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="logout">Logout</button>
+            </form>            
+        </div>
+
+        <div class="box">
+            <h3>Manage Doctor Schedules</h3>
+            <ul>
+                {% for doctor in doctors %}
+                    <li>{{ doctor.name }} - Available: {{ doctor.availability }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="box">
+            <h3>Appointment Requests</h3>
+            <p>Pending requests: {{ pending_requests }}</p>
+        </div>
+
+        <div class="box">
+            <h3>Notifications</h3>
+            <p>No new notifications.</p>
+        </div>
+        </div><div class="box">
+            <h3>Diseases To Showcase</h3>
+            <a href="{% url 'accounts:add_disease' %}"> Add New Disease</a>
+        </div>
+    </div>
+
+</body>
+</html>

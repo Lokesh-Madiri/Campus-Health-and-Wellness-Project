@@ -1,0 +1,240 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Campus Health and Wellness Project</title>
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        
+        {% if messages %}
+            <script>
+                window.onload = function() {
+                    {% for message in messages %}
+                        alert("{{ message }}");
+                    {% endfor %}
+                };
+            </script>
+        {% endif %}
+
+        <style>
+            /* Hero Image */
+            .Rel-img {
+                position: relative;
+                margin-bottom: 90px;
+                max-width: 100%;
+                text-align: center;
+            }
+
+            .Rel-img img {
+                width: 100%;
+                height: auto;
+                display: block;
+                border-radius: 12px;
+            }
+
+            .overlaytext {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(2%, -50%);
+                background: rgba(0, 0, 0, 0.6);
+                color: white;
+                padding: 10px 20px;
+                font-size: 24px;
+                border-radius: 8px;
+            }
+
+            /* Bento Grid Layout */
+            .bento-grid {
+                margin-top: 50px;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+                padding: 20px;
+            }
+
+            .bento-item {
+                position: relative;
+                height: 200px;
+                border-radius: 12px;
+                box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+                transition: transform 0.3s ease-in-out;
+                overflow: hidden;
+                background-size: cover;
+                background-position: center;
+            }
+
+            .bento-item:hover {
+                transform: scale(1.05);
+            }
+
+            .overlay {
+                position: absolute;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.6);
+                color: white;
+                width: 100%;
+                padding: 10px;
+                text-align: center;
+            }
+
+            .btn {
+                display: inline-block;
+                padding: 5px 10px;
+                background: #0078D7;
+                color: white;
+                text-decoration: none;
+                border-radius: 5px;
+                font-size: 14px;
+            }
+
+            .btn:hover {
+                background: #005aa7;
+            }
+
+            /* Search Bar */
+            .search-container {
+                display: flex;
+                justify-content: center;
+                margin-top: 20px;
+            }
+
+            .search-container input {
+                width: 60%;
+                padding: 10px;
+                font-size: 16px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+        </style>
+    </head>
+    <body>
+
+        <!-- Navbar -->
+        <section class="navbar">
+            <img src="{% static 'images/jntugv.png' %}" alt="JNTU GV University Logo">
+            <nav>
+                <ul>
+                    {% if request.user.userprofile.role|lower == "citizen" or request.user.userprofile.role|lower == "student" or not user.is_authenticated%}
+                        <li><a href="{% url 'Appointments:appointments_form' %}">Request Appointment</a></li>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                        <li>
+                            <h4><a href="{% url 'accounts:userdashboard' %}">
+                                Welcome, {{ user.username }}&nbsp;&nbsp;<i class="fa-solid fa-user"></i>
+                            </a></h4>
+                        </li>
+                    {% else %}
+                        <li><a href="{% url 'accounts:login' %}">Login&nbsp;&nbsp;<i class="fa-solid fa-user"></i></a></li>
+                    {% endif %}
+                    <li><a href="services.html"><i class="fa-solid fa-magnifying-glass"></i></a></li>
+                </ul>
+            </nav>
+        </section>
+        
+
+        <!-- Hero Section -->
+        <section class="Rel-img">
+            <img src="{% static 'images/bg.jpg' %}" alt="Campus Image" loading="lazy">
+            <div class="overlaytext">Campus Health is Top Priority</div>
+        </section>
+
+        <!-- Shortcut Section -->
+        <div class="shortcut">
+            <div class="firsthalf">
+                <h2>Healing Starts Here</h2>
+                <h3>We are here to help you</h3>
+            </div>
+            <ul>
+                {% if request.user.userprofile.role|lower == "citizen" or request.user.userprofile.role|lower == "student" or not user.is_authenticated %}
+                    <hr>
+                    <li><a href="{% url 'Appointments:appointments_form' %}">Request an Appointment<i class="fas fa-arrow-right"></i></a></li>
+                {% endif %}
+                <hr>
+                <li><a href="Guide.html">Patient & Visitor Guide<i class="fas fa-arrow-right"></i></a></li>
+                <hr>
+                <li><a href="Condition&Diseases.html">Diseases and Conditions<i class="fas fa-arrow-right"></i></a></li>
+                <hr>
+                <li><a href="contactDoctor.html">Find a Doctor<i class="fas fa-arrow-right"></i></a></li>
+                <hr>
+            </ul>
+        </div>
+        
+        <h1 style="font-size:2.5rem;padding-left:40px;margin-top:40px;display:inline-block;">Diseases that are now Hazardous</h1>
+        <div class="search-container" style="display:inline-block;vertical-align:middle;margin-left:400px;margin-top : -12px">
+            <form action="{% url 'HealthHive:search_results' %}" method="GET" style="display:flex;align-items:center;">
+            <input 
+                type="text" 
+                name="search" 
+                placeholder="Search for diseases..." 
+                style="
+                width: 60%; 
+                padding: 10px; 
+                font-size: 16px; 
+                border: 1px solid #ccc; 
+                border-radius: 5px; 
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); 
+                margin-right: 10px;
+                margin-left: 10px;"
+            >
+            <button 
+                type="submit" 
+                style="
+                padding: 10px 20px; 
+                font-size: 16px; 
+                background-color: #0078D7; 
+                color: white; 
+                border: none; 
+                border-radius: 5px; 
+                cursor: pointer; 
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);"
+            >
+                Search
+            </button>
+            </form>
+        </div>
+        <!-- Featured Diseases -->
+        <section class="bento-grid">
+            
+            {% if featured_diseases %}
+                {% for disease in featured_diseases %}
+                    <div class="bento-item lazy" data-src="{% if disease.image and disease.image.url %}{{ disease.image.url }}{% endif %}">
+                        <div class="overlay">
+                            <h3>{{ disease.name }}</h3>
+                            <p>{{ disease.description|truncatechars_html:100 }}</p>
+                            <a href="{% url 'HealthHive:disease_detail' disease.id %}" class="btn">View More</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No diseases found.</p>
+            {% endif %}
+        </section>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const lazyItems = document.querySelectorAll(".bento-item.lazy");
+                const observer = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const item = entry.target;
+                            const src = item.getAttribute("data-src");
+                            if (src) {
+                                item.style.backgroundImage = `url('${src}')`;
+                                item.classList.remove("lazy");
+                                observer.unobserve(item);
+                            }
+                        }
+                    });
+                });
+
+                lazyItems.forEach(item => observer.observe(item));
+            });
+        </script>
+
+        <!-- Search Bar (Moved outside Bento Grid) -->
+        
+
+    </body>
+</html>

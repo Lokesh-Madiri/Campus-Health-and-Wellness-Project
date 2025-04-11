@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            text-decoration: none;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .login-container {
+            background: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            width: 400px;
+            text-align: center;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        #button {
+            width: 96%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #button:hover {
+            background-color: #0056b3;
+        }
+        
+        .registration-link {
+            margin-top: 20px;
+            font-size: small;
+        }
+        .registration-link a{
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .registration-link a :hover{
+            color: #000000;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form action="{% url 'accounts:login' %}" method="post">
+        {% csrf_token %}
+        <input type="text" name="username" id="username" placeholder="Username" required>
+        <input type="password" name="password" id="password" placeholder="Password" required>
+        <input type="submit" id="button">
+        </form>
+        <form>
+        <div class="registration-link">
+            <a href="{% url 'accounts:registration' %}">Don't have an account? Register here</a>
+        </div>
+
+        <div error>
+            {% for message in messages %}
+            <p style="color: red;">{{ message }}</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    
+
+    
+</body>
+</html>
